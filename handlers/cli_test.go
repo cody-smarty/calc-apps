@@ -8,6 +8,14 @@ import (
 	"github.com/cody-smarty/calc-lib"
 )
 
+func TestHandler_NilCalculator(t *testing.T) {
+	handler := NewCLIHandler(nil, nil)
+	err := handler.Handle([]string{})
+	if err != nil {
+
+	}
+}
+
 func TestHandler_ResultWrittenToOutput(t *testing.T) {
 	stdout := &bytes.Buffer{}
 	handler := NewCLIHandler(stdout, &calc.Addition{})
@@ -23,7 +31,7 @@ func TestHandler_ResultWrittenToOutput(t *testing.T) {
 }
 
 func TestHandler_TwoArgsRequired(t *testing.T) {
-	handler := NewCLIHandler(nil, nil)
+	handler := NewCLIHandler(nil, &calc.Addition{})
 
 	err := handler.Handle(nil)
 
@@ -31,7 +39,7 @@ func TestHandler_TwoArgsRequired(t *testing.T) {
 }
 
 func TestHandler_FirstArgInvalid(t *testing.T) {
-	handler := NewCLIHandler(nil, nil)
+	handler := NewCLIHandler(nil, &calc.Addition{})
 
 	err := handler.Handle([]string{"invalid", "42"})
 
@@ -39,7 +47,7 @@ func TestHandler_FirstArgInvalid(t *testing.T) {
 }
 
 func TestHandler_SecondArgInvalid(t *testing.T) {
-	handler := NewCLIHandler(nil, nil)
+	handler := NewCLIHandler(nil, &calc.Addition{})
 
 	err := handler.Handle([]string{"42", "invalid"})
 
@@ -60,7 +68,7 @@ func assertErr(t *testing.T, actual error, targets ...error) {
 	for _, target := range targets {
 		if !errors.Is(actual, target) {
 			t.Helper()
-			t.Errorf("want :%v, got: %v", target, actual)
+			t.Errorf("want: %v, got: %v", target, actual)
 		}
 	}
 }

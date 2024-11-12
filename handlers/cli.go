@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io"
 	"strconv"
-
-	"github.com/cody-smarty/calc-lib"
 )
 
 type Calculator interface {
@@ -18,7 +16,7 @@ type CLIHandler struct {
 	calculator Calculator
 }
 
-func NewCLIHandler(stdout io.Writer, calculator *calc.Addition) *CLIHandler {
+func NewCLIHandler(stdout io.Writer, calculator Calculator) *CLIHandler {
 	return &CLIHandler{
 		stdout:     stdout,
 		calculator: calculator,
