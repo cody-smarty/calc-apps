@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"errors"
 	"log"
 	"strings"
 	"testing"
@@ -64,4 +65,37 @@ func TestCSVHandler(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestCSVHandler_ReadError(t *testing.T) {
+	reader := ErringReader{err: boink}
+	handler := NewCSVHandler(nil, reader, nil, nil)
+
+	err := handler.Handle()
+
+	assertErr(t, err, boink)
+}
+
+func TestCSVHandler_WriteError(t *testing.T) {
+	// This test doesn't return an error on Write (because the CSV wraps the ErringWriter)
+	// It _does_ cause the flush to fail, allowing the error to be returned by Error()
+	reader := strings.NewReader("1,+,2")
+	writer := ErringWriter{err: boink}
+	handler := NewCSVHandler(nil, reader, writer, map[string]Calculator{"+": &calc.Addition{}})
+
+	err := handler.Handle()
+
+	assertErr(t, err, boink)
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+var boink = errors.New("boink error")
+
+type ErringReader struct {
+	err error
+}
+
+func (e ErringReader) Read(_ []byte) (int, error) {
+	return 0, e.err
 }

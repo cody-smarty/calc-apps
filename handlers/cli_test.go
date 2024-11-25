@@ -64,6 +64,8 @@ func TestHandler_OutputWriterError(t *testing.T) {
 	assertErr(t, err, errOutputFailure)
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 func assertErr(t *testing.T, actual error, targets ...error) {
 	for _, target := range targets {
 		if !errors.Is(actual, target) {
