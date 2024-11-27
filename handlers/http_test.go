@@ -12,10 +12,6 @@ import (
 	"github.com/cody-smarty/calc-lib"
 )
 
-func TestHTTPHandler_old(t *testing.T) {
-
-}
-
 func TestHTTPHandler(t *testing.T) {
 	tests := map[string]struct {
 		request    string
