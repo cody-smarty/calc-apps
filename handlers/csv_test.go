@@ -39,7 +39,7 @@ func TestCSVHandler(t *testing.T) {
 			input:  "1,+,2\n9,+,NaN\n4,+,5\n",
 			output: "1,+,2,3\n4,+,5,9\n",
 		},
-		"Invalid operand": {
+		"Invalid operator": {
 			input:  "1,+,2\n9,Noop,8\n4,+,5\n",
 			output: "1,+,2,3\n4,+,5,9\n",
 		},
